@@ -1,0 +1,13 @@
+rvm:
+  - rbx-19mode
+  - 2.0.0
+  - 1.9.3
+notifications:
+  recipients:
+    - envygeeks@gmail.com
+branches:
+  only:
+    - master
+env:
+  - "DB_TYPE=mysql2 DB_USER=travis"
+  - "DB_TYPE=postgresql DB_USER=postgres"
