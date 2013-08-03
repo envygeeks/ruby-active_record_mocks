@@ -6,8 +6,10 @@ group :development do
     gem "pry"
   end
 
-  gem "mysql2"
-  gem "pg"
+  gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
+  gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
+  gem "mysql2", :platforms => [:mswin, :mingw, :ruby]
+  gem "pg", :platforms => [:mswin, :mingw, :ruby]
   gem "rake"
   gem "envygeeks-coveralls"
   gem "luna-rspec-formatters"
