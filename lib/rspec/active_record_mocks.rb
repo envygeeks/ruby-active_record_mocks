@@ -29,10 +29,21 @@ module RSpec
     def clean_tables_for_active_record_mocking
       if mocked_active_record_options[:mocked_active_record_tables]
         mocked_active_record_options.delete(:mocked_active_record_tables).each do |tbl|
-          Object.send(:remove_const, tbl.camelize) if defined?(tbl.camelize)
-          ActiveRecord::Base.connection.drop_table(tbl)
+          ActiveRecord::Base.connection.drop_table(tbl) if active_record_tables.include?(tbl)
+          if Object.const_defined?(tbl.camelize)
+            Object.send(:remove_const, tbl.camelize)
+          end
         end
       end
+    end
+
+    # ------------------------------------------------------------------------
+    # Aliases ActiveRecord::Base.connection.tables to active_record_tables to
+    # a geniunely useful method that can be used by anybody doing db testing.
+    # ------------------------------------------------------------------------
+
+    def active_record_tables
+      ActiveRecord::Base.connection.tables
     end
 
     private
