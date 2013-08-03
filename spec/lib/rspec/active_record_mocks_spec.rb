@@ -26,7 +26,6 @@ describe RSpec::ActiveRecordMocks do
       ext["extname"]
     end
 
-    $stdout.puts extensions
     expect(extensions).to include "hstore"
   end
 
