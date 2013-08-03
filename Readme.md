@@ -25,7 +25,7 @@ bit flexible in how you try to use it.
 # ----------------------------------------------------------------------------
 
 describe TestConcern do
-  it 'should work as expected' do
+  it "should work as expected" do
     expect(mock_active_record_model(:include => TestConcern).test_column).to eq "value"
   end
 end
