@@ -8,15 +8,35 @@ describe RSpec::ActiveRecordMocks do
   end
 
   it "allows for enabling extensions" do
+
+    # ------------------------------------------------------------------------
+    # THERE IS A CONDITIONAL JRUBY IS BROKEN CLAUSE HERE!
+    # ------------------------------------------------------------------------
+
     pending "MySQL does not support extensions" if ENV["DB_TYPE"] == "mysql2"
-    $stdout.puts ActiveRecord::Base.connection.adapter_name
+    if RbConfig::CONFIG["ruby_install_name"] == "jruby"
+      pending "jRuby JDBC is broken when it comes to extensions"
+    end
+
+    # ------------------------------------------------------------------------
+
     mock_active_record_model(:extensions => :hstore)
     expect(ActiveRecord::Base.connection.extensions).to include "hstore"
   end
 
   context "with MySQL" do
     it "raises if enabling extensions" do
-      pending "This is a MySQL test." unless ENV["DB_TYPE"] == "mysql2"
+
+      # ----------------------------------------------------------------------
+      # THERE IS A CONDITIONAL JRUBY IS BROKEN CLAUSE HERE!
+      # ----------------------------------------------------------------------
+
+      unless ENV["DB_TYPE"] == "mysql2" || RbConfig::CONFIG["ruby_install_name"] == "jruby"
+        pending "This is a MySQL test."
+      end
+
+      # ----------------------------------------------------------------------
+
       expect_error RSpec::ActiveRecordMocks::ExtensionsUnsupportedError do
         mock_active_record_model(:extensions => :hstore)
       end

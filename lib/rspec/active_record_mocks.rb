@@ -5,7 +5,7 @@ module RSpec
   module ActiveRecordMocks
     class ExtensionsUnsupportedError < StandardError
       def initialize
-        super "Extensions are unsupported on MySQL"
+        super "Your adapter does not support PostgreSQL extensions"
       end
     end
 
@@ -46,6 +46,12 @@ module RSpec
       ActiveRecord::Base.connection.tables
     end
 
+    # ------------------------------------------------------------------------
+    # Allows us to access options for either the class or the test itself as
+    # to allow users to either work on the class or work in the test allowing
+    # us to cleanup without affecting the other.
+    # ------------------------------------------------------------------------
+
     private
     def mocked_active_record_options
       (example.nil?) ? (@mocked_active_record_options ||= {}) : example.options
@@ -84,7 +90,7 @@ module RSpec
     private
     def setup_active_record_mocking_extensions(ext)
       ext = [ext].delete_if { |value| value.blank? }.flatten
-      if ext.size > 0 && ActiveRecord::Base.connection.adapter_name =~ /mysql/i
+      if ext.size > 0 && !ActiveRecord::Base.connection.respond_to?(:enable_extension)
         raise ExtensionsUnsupportedError
       else
         ext.each do |extension|
