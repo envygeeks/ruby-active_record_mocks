@@ -5,8 +5,11 @@ describe RSpec::ActiveRecordMocks do
     expect(mock_active_record_model).to respond_to :table_name
     expect(mock_active_record_model).to respond_to :first
     expect(mock_active_record_model).to respond_to :all
-    # This test is removed because of some weird shit with AR?
-    # expect(mock_active_record_model).to be_kind_of ActiveRecord::Base
+  end
+
+  it "allows for enabling extensions" do
+    mock_active_record_model(:extensions => :hstore)
+    expect(ActiveRecord::Base.connection.extensions).to include "hstore"
   end
 
   it "allows for custom table names" do

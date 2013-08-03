@@ -9,7 +9,8 @@ module RSpec
     # ------------------------------------------------------------------------
 
     def mock_active_record_model(opts = {}, &block)
-      tbl = create_active_record_table_for_mocking(opts.delete(:name), &block)
+      tbl, ext = opts.delete(:name), opts.delete(:extensions)
+      tbl = create_active_record_table_for_mocking(tbl, ext, &block)
       Object.const_set(tbl.camelize, Class.new(ActiveRecord::Base)).class_eval do
         include opts.delete(:include) if opts[:include]
         self.table_name = tbl and self
@@ -39,9 +40,9 @@ module RSpec
     # ------------------------------------------------------------------------
 
     private
-    def create_active_record_table_for_mocking(tbl = nil, &block)
+    def create_active_record_table_for_mocking(tbl, ext, &block)
       tbl = (tbl || SecureRandom.hex(30).tr('^a-z', '')).to_s
-      setup_active_record_mocking_table(tbl, &block)
+      setup_active_record_mocking_table(tbl, ext, &block)
       tbl
     end
 
@@ -50,9 +51,13 @@ module RSpec
     # ------------------------------------------------------------------------
 
     private
-    def setup_active_record_mocking_table(tbl, &block)
+    def setup_active_record_mocking_table(tbl, ext, &block)
       (mocked_active_record_options[:mocked_active_record_tables] ||= []).push(tbl)
       ActiveRecord::Migration.suppress_messages do
+        [ext].delete_if { |value| value.blank? }.flatten.each do |extension|
+          ActiveRecord::Migration.enable_extension(extension)
+        end
+
         ActiveRecord::Migration.create_table tbl do |obj|
           block.call(obj) if block_given?
         end

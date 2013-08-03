@@ -34,6 +34,20 @@ end
 ```ruby
 
 # ----------------------------------------------------------------------------
+# An example using extensions!
+# ----------------------------------------------------------------------------
+
+describe TestConcern do
+  it "should work with extensions" do
+    mock_active_record_model(:extensions => :hstore)
+    expect(ActiveRecord::Base.connection.extensions).to include "hstore"
+  end
+end
+```
+
+```ruby
+
+# ----------------------------------------------------------------------------
 # Before :all example with :include and a migration.
 # Also works with `before :each`
 # ----------------------------------------------------------------------------
