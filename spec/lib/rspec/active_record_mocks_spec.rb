@@ -21,8 +21,13 @@ describe RSpec::ActiveRecordMocks do
     # ------------------------------------------------------------------------
 
     mock_active_record_model(:extensions => :hstore)
-    ActiveRecord::Base.connection.reset!
-    expect(ActiveRecord::Base.connection.extensions).to include "hstore"
+    extensions_query = "SELECT extname from pg_extension"
+    extensions = ActiveRecord::Base.connection.execute(extensions_query).map do |ext|
+      ext["extname"]
+    end
+
+    $stdout.puts extensions
+    expect(extensions).to include "hstore"
   end
 
   context "with MySQL or jRuby JDBC" do
