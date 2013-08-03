@@ -35,6 +35,6 @@ RSpec.configure do |config|
 
   config.after :suite do
     ActiveRecord::Base.connection.disconnect!
-    # system("#{db_cmd % db_user} 'DROP DATABASE IF EXISTS #{db_database}' >/dev/null 2>&1")
+    system("#{db_cmd % db_user} 'DROP DATABASE IF EXISTS #{db_database}' >/dev/null 2>&1")
   end
 end
