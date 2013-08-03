@@ -24,7 +24,7 @@ module RSpec
     def clean_tables_for_active_record_mocking
       if mocked_active_record_options[:mocked_active_record_tables]
         mocked_active_record_options.delete(:mocked_active_record_tables).each do |tbl|
-          Object.send(:remove_const, tbl.camelize)
+          Object.send(:remove_const, tbl.camelize) if defined?(tbl.camelize)
           ActiveRecord::Base.connection.drop_table(tbl)
         end
       end
