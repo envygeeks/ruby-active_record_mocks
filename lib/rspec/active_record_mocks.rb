@@ -3,6 +3,11 @@ require "active_record"
 
 module RSpec
   module ActiveRecordMocks
+    class ExtensionsUnsupportedError < StandardError
+      def initialize
+        super "Extensions are unsupported on MySQL"
+      end
+    end
 
     # ------------------------------------------------------------------------
     # Allow people to mock ActiveRecord while giving them the flexibility.
@@ -54,12 +59,25 @@ module RSpec
     def setup_active_record_mocking_table(tbl, ext, &block)
       (mocked_active_record_options[:mocked_active_record_tables] ||= []).push(tbl)
       ActiveRecord::Migration.suppress_messages do
-        [ext].delete_if { |value| value.blank? }.flatten.each do |extension|
-          ActiveRecord::Migration.enable_extension(extension)
-        end
-
+        setup_active_record_mocking_extensions(ext)
         ActiveRecord::Migration.create_table tbl do |obj|
           block.call(obj) if block_given?
+        end
+      end
+    end
+
+    # ------------------------------------------------------------------------
+    # Sets up the extensions for PostgreSQL.
+    # ------------------------------------------------------------------------
+
+    private
+    def setup_active_record_mocking_extensions(ext)
+      ext = [ext].delete_if { |value| value.blank? }.flatten
+      if ext.size > 0 && ActiveRecord::Base.connection.adapter_name =~ /mysql/i
+        raise ExtensionsUnsupportedError
+      else
+        ext.each do |extension|
+          ActiveRecord::Migration.enable_extension(extension)
         end
       end
     end

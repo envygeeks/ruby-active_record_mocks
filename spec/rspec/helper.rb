@@ -7,6 +7,7 @@ if RbConfig::CONFIG["ruby_install_name"] == "jruby"
 end
 
 require "luna/rspec/formatters/checks"
+require "rspec/expect_error"
 require_relative "../support/simplecov"
 require "rspec/active_record_mocks"
 

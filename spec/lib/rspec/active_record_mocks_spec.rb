@@ -8,8 +8,18 @@ describe RSpec::ActiveRecordMocks do
   end
 
   it "allows for enabling extensions" do
+    pending "MySQL does not support extensions" if ENV["DB_TYPE"] == "mysql2"
     mock_active_record_model(:extensions => :hstore)
     expect(ActiveRecord::Base.connection.extensions).to include "hstore"
+  end
+
+  context "with MySQL" do
+    it "raises if enabling extensions" do
+      pending "This is a MySQL test." unless ENV["DB_TYPE"] == "mysql2"
+      expect_error RSpec::ActiveRecordMocks::ExtensionsUnsupportedError do
+        mock_active_record_model(:extensions => :hstore)
+      end
+    end
   end
 
   it "allows for custom table names" do
