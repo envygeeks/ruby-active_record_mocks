@@ -25,7 +25,7 @@ describe RSpec::ActiveRecordMocks do
     expect(ActiveRecord::Base.connection.extensions).to include "hstore"
   end
 
-  context "with MySQL" do
+  context "with MySQL or jRuby JDBC" do
     it "raises if enabling extensions" do
 
       # ----------------------------------------------------------------------
