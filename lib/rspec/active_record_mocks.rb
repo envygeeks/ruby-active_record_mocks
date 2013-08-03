@@ -69,12 +69,12 @@ module RSpec
     private
     def setup_active_record_mocking_table(tbl, ext, &block)
       (mocked_active_record_options[:mocked_active_record_tables] ||= []).push(tbl)
-      ActiveRecord::Migration.suppress_messages do
+      # ActiveRecord::Migration.suppress_messages do
         setup_active_record_mocking_extensions(ext)
         ActiveRecord::Migration.create_table tbl do |obj|
           block.call(obj) if block_given?
         end
-      end
+      # end
     end
 
     # ------------------------------------------------------------------------
