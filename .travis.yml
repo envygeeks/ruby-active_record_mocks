@@ -1,7 +1,3 @@
-before_install: ["sudo apt-get install postgresql-contrib --no-install-recommends --yes"]
-after_script:
-  - "psql -U postgres -d rspec_active_record_mocker_testing -c '\\dx'"
-  - "psql -c 'SELECT extname from pg_extension'"
 rvm:
   - rbx-19mode
   - 2.0.0
