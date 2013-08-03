@@ -2,6 +2,10 @@ db_cmd = ENV["DB_TYPE"] == "mysql2" ? "mysql -u %s -e" : "psql -U %s -c"
 db_database = "rspec_active_record_mocker_testing"
 db_user = ENV["DB_USER"] || "jordon"
 
+if RbConfig::CONFIG["ruby_install_name"] == "jruby"
+  ENV["DB_TYPE"] = ENV["DB_TYPE"] == "mysql2" ? "jdbcmysql" : "jdbcpostgresql"
+end
+
 require "luna/rspec/formatters/checks"
 require_relative "../support/simplecov"
 require "rspec/active_record_mocks"
