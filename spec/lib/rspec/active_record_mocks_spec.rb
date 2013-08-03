@@ -21,6 +21,7 @@ describe RSpec::ActiveRecordMocks do
     # ------------------------------------------------------------------------
 
     mock_active_record_model(:extensions => :hstore)
+    ActiveRecord::Base.connection.reset!
     expect(ActiveRecord::Base.connection.extensions).to include "hstore"
   end
 
