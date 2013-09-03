@@ -22,10 +22,15 @@ describe RSpec::ActiveRecordMocks do
     expect(extensions).to include "hstore"
   end
 
-  context "with MySQL or jRuby JDBC" do
+  context "anything that doesn't support PostgreSQL extensions" do
     it "raises if enabling extensions" do
-      unless ENV["DB_TYPE"] == "mysql2" || RbConfig::CONFIG["ruby_install_name"] == "jruby"
-        pending "This is a MySQL test."
+      original_stubbed_method = ActiveRecord::Base.method(:respond_to?).unbind
+      ActiveRecord::Base.connection.stub(:respond_to?).and_return do |m|
+        if m == :enable_extensions
+          false
+        else
+          original_stubbed_method.bind(ActiveRecord::Base).call(m)
+        end
       end
 
       expect_error RSpec::ActiveRecordMocks::ExtensionsUnsupportedError do

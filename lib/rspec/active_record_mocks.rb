@@ -77,7 +77,7 @@ module RSpec
     private
     def setup_active_record_mocking_extensions(ext)
       ext = [ext].delete_if { |value| value.blank? }.flatten
-      if ext.size > 0 && !ActiveRecord::Base.connection.respond_to?(:enable_extension)
+      if ext.size > 0 && ! ActiveRecord::Base.connection.respond_to?(:enable_extension)
         raise ExtensionsUnsupportedError
       else
         ext.each do |extension|
