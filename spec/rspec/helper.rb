@@ -6,14 +6,10 @@ if RbConfig::CONFIG["ruby_install_name"] == "jruby"
   ENV["DB_TYPE"] = ENV["DB_TYPE"] == "mysql2" ? "jdbcmysql" : "jdbcpostgresql"
 end
 
+require_relative "../support/simplecov"
 require "luna/rspec/formatters/checks"
 require "rspec/expect_error"
-require_relative "../support/simplecov"
 require "rspec/active_record_mocks"
-
-# ----------------------------------------------------------------------------
-# Base connection.
-# ----------------------------------------------------------------------------
 
 ActiveRecord::Base.establish_connection(
   :password => ENV["DB_PASSWORD"],

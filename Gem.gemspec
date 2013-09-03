@@ -13,11 +13,7 @@ Gem::Specification.new do |spec|
   spec.authors = "Jordon Bedwell"
   spec.email = "envygeeks@gmail.com"
 
-  # --------------------------------------------------------------------------
-  # Dependencies.
-  # --------------------------------------------------------------------------
-
-  spec.add_dependency("rspec-expect_error", "~> 0.0.3")
   spec.add_dependency("rspec", "~> 2.14")
+  spec.add_dependency("rspec-expect_error", "~> 0.0.3")
   spec.add_dependency("activerecord", ">= 3.2", "<= 4.0")
 end

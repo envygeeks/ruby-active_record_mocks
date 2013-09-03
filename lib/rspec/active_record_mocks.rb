@@ -1,5 +1,6 @@
 require "active_support/core_ext/string/inflections"
 require "active_record"
+require "rspec"
 
 module RSpec
   module ActiveRecordMocks
@@ -9,9 +10,7 @@ module RSpec
       end
     end
 
-    # ------------------------------------------------------------------------
     # Allow people to mock ActiveRecord while giving them the flexibility.
-    # ------------------------------------------------------------------------
 
     def mock_active_record_model(opts = {}, &block)
       tbl, ext = opts.delete(:name), opts.delete(:extensions)
@@ -22,9 +21,7 @@ module RSpec
       end
     end
 
-    # ------------------------------------------------------------------------
     # Roll through each one of the created tables and destroy them.
-    # ------------------------------------------------------------------------
 
     def clean_tables_for_active_record_mocking
       if mocked_active_record_options[:mocked_active_record_tables]
@@ -37,29 +34,23 @@ module RSpec
       end
     end
 
-    # ------------------------------------------------------------------------
     # Aliases ActiveRecord::Base.connection.tables to active_record_tables to
     # a geniunely useful method that can be used by anybody doing db testing.
-    # ------------------------------------------------------------------------
 
     def active_record_tables
       ActiveRecord::Base.connection.tables
     end
 
-    # ------------------------------------------------------------------------
     # Allows us to access options for either the class or the test itself as
     # to allow users to either work on the class or work in the test allowing
     # us to cleanup without affecting the other.
-    # ------------------------------------------------------------------------
 
     private
     def mocked_active_record_options
       (example.nil?) ? (@mocked_active_record_options ||= {}) : example.options
     end
 
-    # ------------------------------------------------------------------------
     # Creates a temporary table inside of the database using ActiveRecord.
-    # ------------------------------------------------------------------------
 
     private
     def create_active_record_table_for_mocking(tbl, ext, &block)
@@ -68,9 +59,7 @@ module RSpec
       tbl
     end
 
-    # ------------------------------------------------------------------------
     # Sets up the table using an ActiveRecord migration.
-    # ------------------------------------------------------------------------
 
     private
     def setup_active_record_mocking_table(tbl, ext, &block)
@@ -83,9 +72,7 @@ module RSpec
       end
     end
 
-    # ------------------------------------------------------------------------
     # Sets up the extensions for PostgreSQL.
-    # ------------------------------------------------------------------------
 
     private
     def setup_active_record_mocking_extensions(ext)
@@ -100,10 +87,6 @@ module RSpec
     end
   end
 end
-
-# ----------------------------------------------------------------------------
-# Add ourself to the win list so they can use the methods.
-# ----------------------------------------------------------------------------
 
 RSpec.configure do |config|
   config.include RSpec::ActiveRecordMocks
