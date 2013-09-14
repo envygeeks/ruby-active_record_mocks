@@ -9,9 +9,6 @@ describe RSpec::ActiveRecordMocks do
 
   it "allows for enabling extensions" do
     pending "MySQL does not support extensions" if ENV["DB_TYPE"] == "mysql2"
-    if RbConfig::CONFIG["ruby_install_name"] == "jruby"
-      pending "jRuby JDBC is broken when it comes to extensions"
-    end
 
     mock_active_record_model(:extensions => :hstore)
     extensions_query = "SELECT extname from pg_extension"
