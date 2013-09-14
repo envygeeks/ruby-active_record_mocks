@@ -8,9 +8,7 @@ describe RSpec::ActiveRecordMocks do
   end
 
   it "allows for enabling extensions" do
-    $stdout.puts "\n\n\n\n\n\n\n\n\n#{ENV["DB_TYPE"]}\n\n\n\n\n\n\n\n\n"
-
-    if ENV["DB_TYPE"] == "mysql2"
+    if %W(mysql2 jdbcmysql).include?(ENV["DB_TYPE"])
       pending "MySQL does not support extensions"
     end
 
