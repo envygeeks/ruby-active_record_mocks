@@ -6,11 +6,14 @@ group :development do
     gem "pry"
   end
 
+  gem "rake"
+
+  # ---------------------------------------------------------------------------
+  # So we can test a bunch of database platforms.
+  # ---------------------------------------------------------------------------
+
+  gem "pg", :platforms => [:mswin, :mingw, :ruby]
   gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
   gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
   gem "mysql2", :platforms => [:mswin, :mingw, :ruby]
-  gem "pg", :platforms => [:mswin, :mingw, :ruby]
-  gem "rake"
-  gem "envygeeks-coveralls"
-  gem "luna-rspec-formatters"
 end
