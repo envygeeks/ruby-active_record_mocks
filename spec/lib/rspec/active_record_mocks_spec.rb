@@ -8,7 +8,11 @@ describe RSpec::ActiveRecordMocks do
   end
 
   it "allows for enabling extensions" do
-    pending "MySQL does not support extensions" if ENV["DB_TYPE"] == "mysql2"
+    $stdout.puts "\n\n\n\n\n\n\n\n\n#{ENV["DB_TYPE"]}\n\n\n\n\n\n\n\n\n"
+
+    if ENV["DB_TYPE"] == "mysql2"
+      pending "MySQL does not support extensions"
+    end
 
     mock_active_record_model(:extensions => :hstore)
     extensions_query = "SELECT extname from pg_extension"
