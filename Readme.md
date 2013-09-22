@@ -1,3 +1,7 @@
+# Important note:
+
+*Over the next few days this gem will be transformed to simply be `active_record_mocks` so it works with Test::Unit, MiniTest and RSpec.  This gem will be a complete alias of the other one and will still be published but your work flow might change a bit depending on how I decide to go about the work flow, but it will not change much, you will need to simply change which file you require!*
+
 # RSpec Active Record Mocks.
 
 [![Build Status](https://travis-ci.org/envygeeks/rspec-active_record_mocks.png?branch=master)](https://travis-ci.org/envygeeks/rspec-active_record_mocks) [![Coverage Status](https://coveralls.io/repos/envygeeks/rspec-active_record_mocks/badge.png?branch=master)](https://coveralls.io/r/envygeeks/rspec-active_record_mocks) [![Code Climate](https://codeclimate.com/github/envygeeks/rspec-active_record_mocks.png)](https://codeclimate.com/github/envygeeks/rspec-active_record_mocks) [![Dependency Status](https://gemnasium.com/envygeeks/rspec-active_record_mocks.png)](https://gemnasium.com/envygeeks/rspec-active_record_mocks)
