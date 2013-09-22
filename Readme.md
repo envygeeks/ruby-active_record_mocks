@@ -9,7 +9,7 @@ using it in an entirely different way than before.*
 
 # RSpec Active Record Mocks.
 
-[![Build Status](https://travis-ci.org/envygeeks/rspec-active_record_mocks.png?branch=master)](https://travis-ci.org/envygeeks/rspec-active_record_mocks) [![Coverage Status](https://coveralls.io/repos/envygeeks/rspec-active_record_mocks/badge.png?branch=master)](https://coveralls.io/r/envygeeks/rspec-active_record_mocks) [![Code Climate](https://codeclimate.com/github/envygeeks/rspec-active_record_mocks.png)](https://codeclimate.com/github/envygeeks/rspec-active_record_mocks) [![Dependency Status](https://gemnasium.com/envygeeks/rspec-active_record_mocks.png)](https://gemnasium.com/envygeeks/rspec-active_record_mocks)
+[![Build Status](https://travis-ci.org/envygeeks/active_record_mocks.png?branch=master)](https://travis-ci.org/envygeeks/active_record_mocks) [![Coverage Status](https://coveralls.io/repos/envygeeks/active_record_mocks/badge.png?branch=master)](https://coveralls.io/r/envygeeks/active_record_mocks) [![Code Climate](https://codeclimate.com/github/envygeeks/active_record_mocks.png)](https://codeclimate.com/github/envygeeks/active_record_mocks) [![Dependency Status](https://gemnasium.com/envygeeks/active_record_mocks.png)](https://gemnasium.com/envygeeks/active_record_mocks)
 
 ActiveRecord Mocks is designed to aide you in testing your ActiveRecord
 concerns by creating random models (or even named models) that are
