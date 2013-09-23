@@ -1,12 +1,12 @@
 $:.unshift(File.expand_path("../lib", __FILE__))
-require "rspec/active_record_mocks/version"
+require "active_record_mocks/version"
 
 Gem::Specification.new do |spec|
   spec.description = "Mock ActiveRecord tables to test concerns and other code."
   spec.files = %w(Readme.md License Rakefile Gemfile) + Dir.glob("lib/**/*")
   spec.homepage = "https://github.com/envygeeks/rspec-active_record_mocks"
   spec.summary = "Mock ActiveRecord tables to test."
-  spec.version = RSpec::ActiveRecordMocks::VERSION
+  spec.version = ActiveRecordMocks::VERSION
   spec.name = "rspec-active_record_mocks"
   spec.license = "Apache 2.0"
   spec.require_paths = ["lib"]

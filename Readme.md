@@ -1,114 +1,148 @@
-# Important note
-
-*Over the next few days this gem will be transformed to simply be
-`active_record_mocks` so it works with Test::Unit, MiniTest and RSpec.
-This gem will be a complete alias of the other one and will still be
-published but your work flow might change a bit depending on how I
-decide to go about the work flow, this means that you could end up
-using it in an entirely different way than before.*
-
-# RSpec Active Record Mocks.
+# Active Record Mocks.
 
 [![Build Status](https://travis-ci.org/envygeeks/active_record_mocks.png?branch=master)](https://travis-ci.org/envygeeks/active_record_mocks) [![Coverage Status](https://coveralls.io/repos/envygeeks/active_record_mocks/badge.png?branch=master)](https://coveralls.io/r/envygeeks/active_record_mocks) [![Code Climate](https://codeclimate.com/github/envygeeks/active_record_mocks.png)](https://codeclimate.com/github/envygeeks/active_record_mocks) [![Dependency Status](https://gemnasium.com/envygeeks/active_record_mocks.png)](https://gemnasium.com/envygeeks/active_record_mocks)
 
 ActiveRecord Mocks is designed to aide you in testing your ActiveRecord
 concerns by creating random models (or even named models) that are
-removed after each test.
+removed after each test.  It was originally concieved to test concerns,
+includes and other types of things that normally aren't tied to a
+model specifically.
 
 ## Installing
 
 ```ruby
-gem "rspec-active_record_mocks"
+gem "active_record_mocks"
 ```
 
 ## Using
 
-`RSpec::ActiveRecordMocks` supports `before` with `:all` or `:each`, it
-can also be used directly inside the it.  It's designed to try and be a
-little bit flexible in how you try to use it.
-
 ```ruby
+with_mocked_tables do |m|
+  m.enable_extension "uuid-ossp"
+  m.enable_extension "hstore"
 
-# ----------------------------------------------------------------------------
-# One Line Usage.
-# ----------------------------------------------------------------------------
+  t1 = m.create_table do |t|
+    t.model_name :Foo
+    t.belongs_to :bar
 
-describe TestConcern do
-  it "should work as expected" do
-    expect(mock_active_record_model(:include => TestConcern).test_column).to eq "value"
-  end
-end
-```
-
-```ruby
-
-# ----------------------------------------------------------------------------
-# An example using extensions!
-# ----------------------------------------------------------------------------
-
-describe TestConcern do
-  it "should work with extensions" do
-    mock_active_record_model(:extensions => :hstore)
-    expect(ActiveRecord::Base.connection.extensions).to include "hstore"
-  end
-end
-```
-
-```ruby
-
-# ----------------------------------------------------------------------------
-# Before :all example with :include and a migration.
-# Also works with `before :each`
-# ----------------------------------------------------------------------------
-
-describe TestConcern do
-  before :all do
-    @test_model = mock_active_record_model(:include => TestConcern) do
-      table.string(:test_column)
+    t.layout do |l|
+       l.integer :bar_id
     end
   end
 
-  it "should have the concerns method" do
-    expect(@test_model.new).to respond_to :test_method
+  t2 = m.create_table do |t|
+    t.model_name :Bar
+    t.has_many   :foo
+
+    t.layout do |l|
+      l.text :bar_text
+    end
+  end
+
+  # Do Work Here
+end
+```
+
+---
+
+### Extensions
+
+You can enable PostgreSQL extensions inside of your models using the
+`enable_extension` method when inside of `with_mocked_tables` or
+`with_mocked_models` like so:
+
+```ruby
+with_mocked_tables do |m|
+  m.enable_extension "extension-name"
+end
+```
+
+---
+
+### Creating Tables and Layouts
+
+To create tables you use the `create_table` method when inside of
+`with_mocked_tables` or `with_mocked_models`, like so:
+
+```ruby
+with_mocked_tables do |m|
+  m.create_table migration_arguments do |t|
+    t.layout do |l|
+      l.text :foo_text
+    end
   end
 end
 ```
 
+#### Belongs to, Has Many and other methods
+
+Any method that `ActiveRecordMocks` does not know or understand is
+passed on to the model itself, so if you need for example `belongs_to`
+then you would simply use belongs to when creating your table:
+
 ```ruby
-
-# ----------------------------------------------------------------------------
-# Before :all example that does a class_eval to include.
-# Also works with `before :each`
-# ----------------------------------------------------------------------------
-
-describe TestConcern do
-  before :all do
-    @model = mock_active_record_model.class_eval do
-      include MyActiveRecordConcern
+with_mocked_tables do |m|
+  m.create_table migration_arguments do |t|
+    t.belongs_to :bar_model
+    t.layout do |l|
+      l.text :foo_text
     end
-  end
-
-  it "should work" do
-    expect(@model.concern_method).to eq "concern_value"
   end
 end
 ```
 
+#### Named models and tables
+
+If you need a named model or a named table or a model whose table is
+different than it's model you can use the methods `model_name` and
+`table_name`, if you simply need a named model and you use standard
+naming conventions than you can simply leave out the `table_name`
+when using model name and `ActiveRecordMocks` will tabelize the name
+of your model automatically the same as `Rails` would.
+
 ```ruby
-
-# ----------------------------------------------------------------------------
-# Completely random example in a before :all.
-# Also works with `before :each`
-# ----------------------------------------------------------------------------
-
-describe MyActiveRecordConcern do
-  before :all do
-    @model = mock_active_record_model do |table|
-      table.string(:column)
+with_mocked_tables do |m|
+  t1 = m.create_table migration_arguments do |t|
+    t.model_name :Foo
+    t.layout do |l|
+      l.text :foo_text
     end
+  end
+end
 
-    @model.class_eval do
-      include MyActiveRecordConcern
+# Results in:
+#   - Foo  (Model)
+#   - foos (Table)
+```
+
+```ruby
+with_mocked_tables do |m|
+  t1 = m.create_table migration_arguments do |t|
+    t.table_name :old_foo
+    t.model_name :Foo
+    t.layout do |l|
+      l.text :foo_text
+    end
+  end
+end
+
+# Results in:
+#   - Foo      (Model)
+#   - old_foo  (Table)
+```
+
+#### Model Includes
+
+If you need to include anything into your model you can use the
+`includes` method when inside of `with_mocked_models` or
+`with_mocked_tables`, like so:
+
+```ruby
+with_mocked_tables do |m|
+  m.create_table migration_arguments do |t|
+    t.includes Bar1, Bar2
+    t.layout do |l|
+      l.text :foo_text
     end
   end
 end
