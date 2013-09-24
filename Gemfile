@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gemspec
+gemspec :name => "Gem1"
 
 group :development do
   unless ENV["CI"]
