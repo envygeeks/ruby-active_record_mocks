@@ -11,8 +11,7 @@ module ActiveRecordMocks
     def with_mocked_tables(&block)
       if block_given?
         mocked_active_record.tap do |o|
-          block.call(o)
-          o.delete_tables
+          begin block.call(o); ensure o.delete_tables end
         end
       end
     nil
