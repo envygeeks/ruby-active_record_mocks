@@ -10,5 +10,5 @@ branches:
   only:
     - master
 env:
-  - "DB_TYPE=mysql2 DB_USER=travis"
-  - "DB_TYPE=postgresql DB_USER=postgres"
+  - "DBTYPE=mysql2 DBUSER=travis"
+  - "DBTYPE=postgresql DBUSER=postgres"
