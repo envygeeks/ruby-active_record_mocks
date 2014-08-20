@@ -15,7 +15,6 @@ end
 require_relative "../support/simplecov"
 require "luna/rspec/formatters/checks"
 require "active_record_mocks/rspec"
-require "rspec/expect_error"
 require "pry" unless ENV["CI"]
 
 ActiveRecord::Base.establish_connection(

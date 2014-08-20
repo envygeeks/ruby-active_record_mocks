@@ -13,8 +13,8 @@ Gem::Specification.new do |spec|
   spec.authors = "Jordon Bedwell"
   spec.email = "envygeeks@gmail.com"
 
-  spec.add_dependency("activerecord", ">= 3.2", "<= 4.1")
-  spec.add_development_dependency("rspec-expect_error", "~> 0.0")
-  spec.add_development_dependency("envygeeks-coveralls", "~> 0.1")
-  spec.add_development_dependency("luna-rspec-formatters", "~> 0.4")
+  spec.add_dependency("activerecord", ">= 3.2", "< 4.2")
+  spec.add_development_dependency("envygeeks-coveralls", "~> 0.2")
+  spec.add_development_dependency("luna-rspec-formatters", "~> 1.2")
+  spec.add_development_dependency("rspec", "~> 3.0")
 end

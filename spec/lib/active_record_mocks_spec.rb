@@ -38,11 +38,9 @@ describe ActiveRecordMocks do
   end
 
   it "enables extensions" do
-    ActiveRecord::Migration.should_receive(:enable_extension).with("foo")
-    ActiveRecordMocks::Mock.any_instance.stub({
-      :raise_if_extensions_unsupported! => false
-    })
-
+    expect(ActiveRecord::Migration).to receive(:enable_extension).with("foo")
+    allow(ActiveRecordMocks::Mock).to \
+      receive(:raise_if_extensions_unsupported).and_return false
 
     with_mocked_tables do |m|
       m.enable_extension "foo"
@@ -50,12 +48,9 @@ describe ActiveRecordMocks do
   end
 
   it "raises if extensions are unsupported" do
-    expect_error ActiveRecordMocks::Mock::ExtensionsUnsupported do
-      ar_connection.stub(:respond_to? => nil)
-      with_mocked_tables do |m|
-        m.enable_extension "foo"
-      end
-    end
+    allow(ar_connection).to receive(:respond_to?).and_return nil
+    expect { with_mocked_tables { |m| m.enable_extension "foo" }
+      }.to raise_error ActiveRecordMocks::Mock::ExtensionsUnsupported
   end
 
   it "supports changing the model name" do
@@ -64,7 +59,7 @@ describe ActiveRecordMocks do
         t.model_name "Foo"
       end
 
-      expect(defined?(Foo)).to be_true
+      expect(defined?(Foo)).to be_truthy
       expect(t1.table_name).to eq "Foo".tableize
     end
   end
@@ -87,7 +82,7 @@ describe ActiveRecordMocks do
         t.table_name "bar"
       end
 
-      expect(defined?(Foo)).to be_true
+      expect(defined?(Foo)).to be_truthy
       expect(t1.table_name).to eq "bar"
       expect(ar_connection.tables).to include "bar"
     end

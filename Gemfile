@@ -6,7 +6,6 @@ group :development do
     gem "pry"
   end
 
-  gem "rspec"
   gem "rake"
 
   # ---------------------------------------------------------------------------
