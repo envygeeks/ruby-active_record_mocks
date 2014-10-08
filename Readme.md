@@ -147,3 +147,37 @@ with_mocked_tables do |m|
   end
 end
 ```
+
+#### Using a custom parent class
+
+If you need to test a base class that is not ActiveRecord::Base,
+you can do so by specifying the `parent_class` method.
+
+This is useful if your code base uses a custom base class that
+derives from ActiveRecord::Base, like so:
+
+```ruby
+
+class MyBase < ActiveRecord::Base
+  self.abstract_class = true
+  def a_custom_method
+    42
+  end
+end
+
+with_mocked_tables do |m|
+  m.create_table migration_arguments do |t|
+    t.parent_class :MyBase
+    t.model_name :Foo
+    t.layout do |l|
+      l.text :foo_text
+    end
+  end
+
+  f = Foo.new
+  f.is_a?(MyBase)   # <= true
+  f.a_custom_method # <= 42
+end
+
+
+```
