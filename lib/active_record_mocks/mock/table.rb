@@ -13,6 +13,7 @@ module ActiveRecordMocks
         @args = args
         @layout = nil
         @model_name = nil
+        @parent_class = nil
       end
 
       # ---------------------------------------------------------------
@@ -92,6 +93,19 @@ module ActiveRecordMocks
         end
       end
 
+      # ---------------------------------------------------------------
+      # Allows the setting of or setup of and returning of the name
+      # of the parent class. If this is not customized it will
+      # default to ActiveRecord::Base
+      # ---------------------------------------------------------------
+      def parent_class(cname=nil)
+        if setup? || (! cname && @parent_class)
+          @parent_class
+        else
+          @parent_class = cname ? cname.to_s.constantize : ActiveRecord::Base
+        end
+      end
+
       def setup_mocking!
         if ! setup?
           setup_table!
@@ -114,7 +128,7 @@ module ActiveRecordMocks
       private
       def setup_model!
         Object.const_set(model_name,
-            Class.new(ActiveRecord::Base)).tap do |o|
+            Class.new(parent_class)).tap do |o|
           o.table_name = table_name
           setup_includes(o)
           run_model_methods(o)

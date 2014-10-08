@@ -136,4 +136,17 @@ describe ActiveRecordMocks do
       expect(t2.reflections[:foo].macro).to eq :belongs_to
     end
   end
+
+  it "creates a module using specified parent class" do
+    class TestBase < ActiveRecord::Base;  end
+    with_mocked_tables do |m|
+      t1 = m.create_table do |t|
+        t.parent_class :TestBase
+        t.has_many :bars
+        t.model_name :Foo
+      end
+      expect(t1.new).to be_a TestBase
+    end
+  end
+
 end
