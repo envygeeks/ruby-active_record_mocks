@@ -98,11 +98,13 @@ module ActiveRecordMocks
       # of the parent class. If this is not customized it will
       # default to ActiveRecord::Base
       # ---------------------------------------------------------------
+
       def parent_class(cname=nil)
         if setup? || (! cname && @parent_class)
           @parent_class
         else
-          @parent_class = cname ? cname.to_s.constantize : ActiveRecord::Base
+          @parent_class = cname ? cname.to_s.constantize : \
+            ActiveRecord::Base
         end
       end
 
@@ -127,8 +129,9 @@ module ActiveRecordMocks
 
       private
       def setup_model!
-        Object.const_set(model_name,
+        Object.const_set(model_name, \
             Class.new(parent_class)).tap do |o|
+
           o.table_name = table_name
           setup_includes(o)
           run_model_methods(o)
