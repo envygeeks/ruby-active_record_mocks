@@ -138,7 +138,7 @@ describe ActiveRecordMocks do
   end
 
   it "creates a module using specified parent class" do
-    class TestBase < ActiveRecord::Base;  end
+    class TestBase < ActiveRecord::Base; self.abstract_class = true; end
     with_mocked_tables do |m|
       t1 = m.create_table do |t|
         t.parent_class :TestBase
