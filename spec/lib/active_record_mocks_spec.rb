@@ -130,10 +130,10 @@ describe ActiveRecordMocks do
         t.belongs_to :foo
       end
 
-      expect(t2.reflections[:foo]).not_to be_nil
-      expect(t1.reflections[:bars]).not_to be_nil
-      expect(t1.reflections[:bars].macro).to eq :has_many
-      expect(t2.reflections[:foo].macro).to eq :belongs_to
+      expect(t2.reflect_on_association(:foo)).not_to be_nil
+      expect(t1.reflect_on_association(:bars)).not_to be_nil
+      expect(t1.reflect_on_association(:bars).macro).to eq :has_many
+      expect(t2.reflect_on_association(:foo).macro).to eq :belongs_to
     end
   end
 
