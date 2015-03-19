@@ -149,4 +149,15 @@ describe ActiveRecordMocks do
     end
   end
 
+  it "doesn't complain when the class already exists" do
+    class ALongTableNameThatDoesntExist < ActiveRecord::Base; end
+    with_mocked_tables do |m|
+      m.create_table do |t|
+        t.model_name :ALongTableNameThatDoesntExist
+      end
+    end
+    # even though the class existed beforehand, we should still cleanup
+    expect(Object.const_defined?(:ALongTableNameThatDoesntExist)).to be(false)
+  end
+
 end

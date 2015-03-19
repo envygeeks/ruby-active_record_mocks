@@ -129,13 +129,11 @@ module ActiveRecordMocks
 
       private
       def setup_model!
-        Object.const_set(model_name, \
-            Class.new(parent_class)).tap do |o|
-
-          o.table_name = table_name
-          setup_includes(o)
-          run_model_methods(o)
-        end
+        definition = Object.const_defined?(model_name) ? Object.const_get(model_name) :
+                       Object.const_set(model_name, Class.new(parent_class))
+        definition.table_name = table_name
+        setup_includes(definition)
+        run_model_methods(definition)
       end
 
       private
