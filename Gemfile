@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gemspec :name => "Gem1"
+gemspec :name => "active_record_mocks"
 
 group :development do
   unless ENV["CI"]
