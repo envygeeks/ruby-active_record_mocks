@@ -3,7 +3,7 @@ require "active_record_mocks/version"
 
 Gem::Specification.new do |spec|
   spec.description = "Mock ActiveRecord tables to test concerns and other code."
-  spec.files = %w(Readme.md License Rakefile Gemfile) + Dir.glob("lib/**/*")
+  spec.files = %w(README.md LICENSE Rakefile Gemfile) + Dir.glob("lib/**/*")
   spec.homepage = "https://github.com/envygeeks/active_record_mocks"
   spec.summary = "Mock ActiveRecord tables to test."
   spec.version = ActiveRecordMocks::VERSION
