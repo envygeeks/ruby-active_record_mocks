@@ -1,4 +1,5 @@
 require "rspec/helper"
+require 'io/console'
 
 describe ActiveRecordMocks do
   subject(:ar_connection) do
