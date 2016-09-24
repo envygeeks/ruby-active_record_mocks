@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.authors = "Jordon Bedwell"
 
-  spec.add_dependency("activerecord", ">= 3.2", "< 4.3")
+  spec.add_dependency("activerecord", ">= 4.1", "<= 5.1")
   spec.add_development_dependency("envygeeks-coveralls", "~> 1.0")
   spec.add_development_dependency("luna-rspec-formatters", "~> 3.3")
   spec.add_development_dependency("rspec", "~> 3.3")
